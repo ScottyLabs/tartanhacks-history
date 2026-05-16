@@ -1,1 +1,0 @@
-# TartanHacks 2020
