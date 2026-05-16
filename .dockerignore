@@ -1,6 +1,6 @@
 .git
 .github
 *.md
-!sites/**/README.md
+!2020/README.md
 build-tmp
 node_modules
