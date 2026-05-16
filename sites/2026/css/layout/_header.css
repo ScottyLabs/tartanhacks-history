@@ -1,0 +1,44 @@
+/* Header & Navigation */
+header {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding-left: 16px;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    margin-left: auto;
+    padding: 0 65px;
+    gap: 72px;
+}
+
+.header-nav-link {
+    color: #000;
+    font-family: "PPRader", sans-serif;
+    font-size: var(--nav-font-size);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: #00000000 underline;
+    transition: all 0.3s ease-in-out;
+}
+
+.header-nav-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.header-logo_link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}

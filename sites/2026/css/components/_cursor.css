@@ -1,0 +1,25 @@
+/* Custom Cursor Effect */
+
+.cursor-effect {
+    /* Position and Size */
+    position: fixed;
+    top: var(--mouse-y);
+    left: var(--mouse-x);
+    width: 250px;
+    height: 250px;
+    z-index: 9999;
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    /* The Visual Effect (Blur & Brightness) */
+    backdrop-filter: brightness(1.4) blur(8px) saturate(1.8);
+    -webkit-backdrop-filter: brightness(1.4) blur(8px) saturate(1.8);
+
+    /* The Ring Shape (Masking) */
+    -webkit-mask-image: radial-gradient(transparent 30%, #000000DD 70%, #000000FF 85%, transparent 100%);
+    mask-image: radial-gradient(transparent 30%, #000000DD 70%, transparent 80%);
+
+    /* Centering Logic - Centers the div on the exact mouse coordinates */
+    transform: translate(-50%, -50%);
+}

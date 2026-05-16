@@ -1,0 +1,145 @@
+---
+title: TartanHacks 2020
+layout: null
+---
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="mobile-web-app-capable" content="yes"/>
+
+        <title>TartanHacks 2020</title>
+        <link rel="icon" href="rsc/img/favicon.png">
+        <link type="text/css" rel="stylesheet" href="fonts/fonts.css" media="screen"/>
+        <link type="text/css" rel="stylesheet" href="css/style.css" media="screen"/>
+        <link type="text/css" rel="stylesheet" href="css/main.css" media="screen"/>
+        <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+        <link rel="canonical" href="https://tartanhacks.com/" />
+        <meta name="description" content="Carnegie Mellon University's largest hackathon, hosted by ScottyLabs. Come hack, build, make or create your own project.">
+        <meta name="keywords" content="CMU,hackathon,hack,ScottyLabs,technology,Carnegie Mellon,hackcmu,tartanhacks,scotty,pittsburgh,steelhacks,upitt,google,microsoft,emirates,valentines">
+
+        <!-- Facebook Open Graph - Tells Facebook what to show when our webpage is shared. -->
+        <meta property="og:url" content="https://tartanhacks.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="TartanHacks 2020" />
+        <meta property="og:description" content="Carnegie Mellon University's largest hackathon, hosted by ScottyLabs. Come hack, build, make or create your own project." />
+        <meta property="og:image" content="https://tartanhacks.com/rsc/img/TartanhacksEventSquare.png" />
+
+        <!-- Schema.org JSON-LD tags, describes the organization to web crawlers -->
+        <script type="application/ld+json">
+            {
+                "@context": "http://schema.org",
+                "@type": "Event",
+                "description": "Carnegie Mellon University's largest hackathon, hosted by ScottyLabs. Come hack, build, make or create your own project. Sponsored by Emirates, Microsoft, BNY Mellon, and Facebook.",
+                "location": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "USA",
+                    "addressLocality": "Pittsburgh",
+                    "addressRegion": "PA",
+                    "postalCode": "15213",
+                    "streetAddress": "5032 Forbes Ave.",
+                    "name": "Cohon University Center"
+                },
+                "image": "https://tartanhacks.com/rsc/img/TartanhacksEventSquare.png",
+                "name": "TartanHacks",
+                "alternateName": "Tartan Hacks",
+                "startDate": "2020-02-14T17:00:00-05:00",
+                "endDate": "2020-02-15T20:00:00-05:00",
+                "organizer": {
+                    "@type": "Organization",
+                    "sameAs": "https://scottylabs.org"
+                },
+                "url": "https://tartanhacks.com"
+            }
+        </script>
+        <script>
+            var pathname = window.location.pathname;
+      
+            function notAFile(pathname) {
+              for (var i = pathname.length - 1; i >= 0; i--) {
+                if (pathname[i] === "/") {
+                  break;
+                } else if (pathname[i] === ".") {
+                  return false;
+                }
+              }
+              return true;
+            }
+            if (!pathname.endsWith("/") && notAFile(pathname)) {
+              window.history.pushState(null, null, `${window.location.href}/`);
+              window.location.reload();
+            }
+        </script>      
+    </head>
+    <body class="bg-color home-text-color clearfix">
+        <div id="menu">
+            <div class="logo">
+                <img id="mobile" src="rsc/img/mobileImgBlackScreen.png">
+                <a href="/"> 
+                    <img id="header-logo" src="rsc/img/header-logo.png" href="/">
+                </a>
+                <!-- <h2>TartanHacks</h2>
+                <span>February 14-15, 2020</span> -->
+            </div>
+            <span class="options underline">
+                Home
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="faq.html"> FAQ </a>
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="schedule.html"> schedule </a>
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="sponsors.html"> sponsors </a>
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="challenges.html"> challenges </a>
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="rsc/Opening Ceremony.pdf"> slides </a>
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="https://tartanhacks2020.devpost.com/"> Devpost </a>
+            </span>
+            <small><br></small>
+            <span class="options">
+                <a href="https://tartanhacks.com/slack"> slack </a>
+            </span>
+            <!-- <small><br></small>
+            <span class="options">
+            <span class="options-register">   
+                <a href="https://registration.tartanhacks.com"> register </a>
+            </span> -->
+        </div>
+        <div id="main">
+            <div id="registration">
+                <div class="logo">
+                    <img id="desktop" src="rsc/img/newMainImg.png" >
+                    <br>
+                    <span id="date"></span>
+                    <small><br></small>
+                <span class="button">
+                    <a href="rsc/Opening Ceremony.pdf" style="text-decoration:none">Slides</a>
+                </span>
+                <span class="button">
+                    <a href="https://tartanhacks2020.devpost.com/" style="text-decoration:none">Devpost</a>
+                </span>
+                <span class="button">
+                    <a href="https://www.tartanhacks.com/slack" style="text-decoration:none">Slack</a>  
+                </span>
+                </div>
+            </div>
+        </div>
+        <div id="copyright">
+            &copy; ScottyLabs 2020
+        </div>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><style id="th-hub-float-style">#th-hub-float{position:fixed;bottom:1.25rem;right:1.25rem;z-index:2147483647;display:inline-flex;align-items:center;gap:0.45rem;font-family:'Space Grotesk',system-ui,sans-serif;font-size:0.8125rem;font-weight:600;letter-spacing:0.06em;color:#f4f4f8;text-decoration:none;padding:0.42rem 0.85rem 0.42rem 0.55rem;border-radius:999px;background:radial-gradient(ellipse 130% 160% at 85% -20%,rgba(240,198,116,0.28),transparent 52%),linear-gradient(158deg,#05050a 0%,#101018 40%,rgba(196,18,48,0.28) 100%);border:2px solid #c41230;box-shadow:0 0 0 1px rgba(240,198,116,0.5),0 3px 0 rgba(0,0,0,0.55),0 18px 42px rgba(0,0,0,0.58),0 0 36px rgba(196,18,48,0.38),inset 0 1px 0 rgba(255,255,255,0.08);backdrop-filter:saturate(160%) blur(10px);-webkit-backdrop-filter:saturate(160%) blur(10px);transition:transform 0.16s ease,filter 0.16s ease,box-shadow 0.16s ease}#th-hub-float:hover{transform:translateY(-2px);filter:brightness(1.07);box-shadow:0 0 0 1px rgba(240,198,116,0.75),0 3px 0 rgba(0,0,0,0.45),0 22px 48px rgba(0,0,0,0.52),0 0 48px rgba(196,18,48,0.48),inset 0 1px 0 rgba(255,255,255,0.12)}#th-hub-float:focus-visible{outline:3px solid #f0c674;outline-offset:3px}#th-hub-float .th-hub-float__arr{color:#f0c674;font-size:1.08em;font-weight:700;line-height:1;margin-right:-0.02em}#th-hub-float .th-hub-float__badge{font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#0a0a0f;background:linear-gradient(180deg,#fff2c2,#f0c674 42%,#b8892e);padding:0.32em 0.48em 0.28em;border-radius:0.35rem;box-shadow:0 1px 0 rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.45)}#th-hub-float .th-hub-float__main{letter-spacing:0.03em;font-weight:600}@media (prefers-reduced-motion:reduce){#th-hub-float{transition:none}#th-hub-float:hover{transform:none;filter:none}}</style><a id="th-hub-float" href="/" title="Year archive hub &mdash; all TartanHacks editions" aria-label="Back to the year archive hub"><span class="th-hub-float__arr" aria-hidden="true">&larr;</span><span class="th-hub-float__badge" aria-hidden="true">Hub</span><span class="th-hub-float__main">All years</span></a></body>
+</html>

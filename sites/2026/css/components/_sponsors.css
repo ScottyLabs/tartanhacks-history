@@ -1,0 +1,187 @@
+/* Sponsors Section */
+
+.sponsors-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    width: 100%;
+    max-width: 1100px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Premier Tier */
+
+.sponsors-premier {
+    position: relative;
+    padding: 31px 42px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-family: "Spline Sans", sans-serif;
+    font-size: 16px;
+    color: #3D2C35;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.premier-badge {
+    position: absolute;
+    top: -15px;
+    left: 40px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 20px;
+    border-radius: 8px;
+    font-family: "Spline Sans", sans-serif;
+    font-size: 16px;
+    color: #3D2C35;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.premier-logos {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.premier-logos a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    background: transparent;
+}
+
+.premier-logos a:hover {
+    transform: scale(1.05);
+}
+
+.premier-logos img {
+    height: 45px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+}
+
+/* Sponsors Grid */
+
+.sponsors-grid {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px 60px;
+    width: 100%;
+    padding: 20px 20px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-family: "Spline Sans", sans-serif;
+    font-size: 16px;
+    color: #3D2C35;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.sponsors-grid a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.sponsors-grid a:hover {
+    transform: scale(1.05);
+}
+
+.sponsors-grid img {
+    height: 35px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+}
+
+.title-badge {
+    position: absolute;
+    top: -15px;
+    left: 40px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 20px;
+    border-radius: 8px;
+    font-family: "Spline Sans", sans-serif;
+    font-size: 16px;
+    color: #3D2C35;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.partner-badge {
+    position: absolute;
+    top: -15px;
+    left: 40px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 20px;
+    border-radius: 8px;
+    font-family: "Spline Sans", sans-serif;
+    font-size: 16px;
+    color: #3D2C35;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.title-logos {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+}
+
+.sponsors-title {
+    position: relative;
+    padding: 31px 42px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-family: "Spline Sans", sans-serif;
+    font-size: 16px;
+    color: #3D2C35;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+}
+
+.sponsors-title a {
+    transition: transform 0.2s ease;
+}
+
+.sponsors-title a:hover {
+    transform: scale(1.3);
+}
+
+.premier-logos img[alt="Dedalus Labs"] {
+    transform: scale(1.1);
+    max-width: 250px;
+}

@@ -1,0 +1,87 @@
+/* Tablet Styles (768px - 1024px) */
+
+/* Short display styles (height < 750px) */
+@media (max-height: 750px) {
+    .hero-transition {
+        position: absolute;
+        z-index: 20;
+        width: 100%;
+        background: #F4F2F3;
+        filter: blur(15px);
+        top: max(calc(100vh - 50px / 2), calc(var(--min-hero-height) - 50px / 2));
+    }
+}
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    nav {
+        gap: 40px;
+        padding: 0 30px;
+    }
+
+    .header-nav-link {
+        font-size: 18px;
+    }
+
+    .hero-title-container {
+        width: 65vw;
+    }
+
+    .hero-subtitle {
+        font-size: 24px;
+    }
+
+    .hero-description {
+        width: 80vw;
+    }
+
+    .hero-description-text {
+        font-size: 20px;
+        line-height: 30px;
+    }
+
+    .section-title {
+        font-size: 64px;
+    }
+
+    .theme-intro {
+        font-size: 24px;
+    }
+
+    .theme-head {
+        font-size: 36px;
+    }
+
+    .theme-description {
+        font-size: 20px;
+        line-height: 30px;
+        max-width: 90%;
+    }
+
+    .section-description {
+        font-size: 20px;
+    }
+
+    .register-link img {
+        width: 25vw;
+    }
+
+    #faqs-content {
+        grid-template-columns: 1fr;
+    }
+}
+    /* Glassy banner tablet */
+    .thank-you-banner {
+        margin: 15px auto;
+        max-width: 80%;
+    }
+
+    .thank-you-text {
+        font-size: 16px;
+    }
+
+    /* Glassy button tablet */
+    .glassy-button {
+        padding: 14px 28px;
+        font-size: 18px;
+    }

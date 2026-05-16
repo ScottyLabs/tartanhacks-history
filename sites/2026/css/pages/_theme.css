@@ -1,0 +1,62 @@
+/* Theme Section */
+.theme-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.theme-head {
+    color: #000;
+    font-family: "PPRader", sans-serif;
+    font-size: clamp(24px, 4vw, 48px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    position: relative;
+    z-index: 100;
+}
+
+.theme-intro {
+    color: #000;
+    font-family: "PPRader", sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 0;
+    text-align: center;
+    position: relative;
+    z-index: 100;
+}
+
+.theme-description {
+    color: #3a3a3a;
+    text-align: center;
+    font-family: "Spline Sans", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 34px;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 100;
+}
+
+.theme-description p {
+    margin: 0 0 24px 0;
+}
+
+.theme-description p:last-child {
+    margin-bottom: 0;
+}
+
+.theme-tagline {
+    margin-top: 24px;
+}
+
+.theme-tagline strong {
+    font-weight: 700;
+}

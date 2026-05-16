@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TartanHacks - Journey Through Time</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-dark: #0a0a0f;
+      --bg-darker: #05050a;
+      --card: rgba(22, 22, 32, 0.92);
+      --card-hover: rgba(34, 34, 48, 0.96);
+      --border: rgba(196, 18, 48, 0.2);
+      --text: #f4f4f8;
+      --text-muted: #9b9bb0;
+      --accent: #c41230;
+      --accent-glow: rgba(196, 18, 48, 0.4);
+      --gold: #f0c674;
+      --gold-muted: rgba(240, 198, 116, 0.3);
+    }
+    
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      min-height: 100vh;
+      font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      background: var(--bg-darker);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    /* Animated time-machine background */
+    .bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+      contain: paint;
+      isolation: isolate;
+      transform: translateZ(0);
+      background: radial-gradient(ellipse 100% 80% at 50% 20%, rgba(196, 18, 48, 0.15), transparent 50%),
+                  radial-gradient(ellipse 120% 100% at 80% 60%, rgba(240, 198, 116, 0.08), transparent 60%),
+                  linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+    }
+    
+    .clock-ring {
+      position: absolute;
+      border: 2px solid;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: rotate 40s linear infinite;
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    
+    .clock-ring:nth-child(1) {
+      width: 600px;
+      height: 600px;
+      top: -200px;
+      left: -100px;
+      border-color: var(--accent);
+      animation-duration: 50s;
+    }
+    
+    .clock-ring:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      bottom: -150px;
+      right: -50px;
+      border-color: var(--gold);
+      animation-duration: 35s;
+      animation-direction: reverse;
+    }
+    
+    .clock-ring:nth-child(3) {
+      width: 800px;
+      height: 800px;
+      top: 50%;
+      left: 50%;
+      border-color: var(--accent);
+      opacity: 0.08;
+      animation-name: rotate-centered;
+      animation-duration: 60s;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes rotate-centered {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(196, 18, 48, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196, 18, 48, 0.03) 1px, transparent 1px);
+      background-size: 120px 120px;
+      opacity: 0.28;
+    }
+    
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 5rem;
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .logo {
+      display: inline-block;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      letter-spacing: -0.03em;
+      text-shadow: 0 0 60px var(--accent-glow);
+    }
+    
+    .tagline {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    
+    .timeline-container {
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, 
+        transparent 0%, 
+        var(--accent) 10%, 
+        var(--accent) 90%, 
+        transparent 100%);
+    }
+    
+    .timeline-content {
+      display: grid;
+      gap: 1.5rem;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    
+    .year-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 2.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+    
+    .year-card::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 3px solid var(--bg-dark);
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition:
+        width 0.3s ease,
+        height 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+    
+    .year-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .year-card:hover {
+      transform: translateX(10px);
+      background: var(--card-hover);
+      border-color: var(--accent);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 24px rgba(196, 18, 48, 0.25);
+    }
+    
+    .year-card:hover::before {
+      width: 20px;
+      height: 20px;
+      box-shadow: 0 0 18px rgba(196, 18, 48, 0.55);
+    }
+    
+    .year-card:hover::after {
+      opacity: 0.1;
+    }
+    
+    .year-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+    
+    .year-content {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .year-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+    
+    .year-theme {
+      font-size: 1.1rem;
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .year-arrow {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--accent);
+      opacity: 0;
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+      z-index: 1;
+    }
+    
+    .year-card:hover .year-arrow {
+      opacity: 1;
+      transform: translateY(-50%) translateX(5px);
+    }
+    
+    footer {
+      margin-top: 5rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    
+    footer a:hover {
+      color: var(--gold);
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .clock-ring {
+        animation: none;
+        will-change: auto;
+      }
+      
+      .clock-ring:nth-child(3) {
+        transform: translate(-50%, -50%);
+      }
+      
+      header,
+      .timeline-content,
+      footer {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+      
+      .year-card,
+      .year-card::before,
+      .year-arrow {
+        transition-duration: 0.01ms;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      main { padding: 3rem 1.5rem 4rem; }
+      header { margin-bottom: 3rem; }
+      .timeline-container { padding-left: 1.5rem; }
+      .year-card { 
+        padding: 1.5rem 1.75rem;
+        flex-direction: row;
+        gap: 1.5rem;
+      }
+      .year-card::before { left: -2rem; }
+      .year-logo {
+        width: 60px;
+        height: 60px;
+      }
+      .year-number { font-size: 2rem; }
+      .year-theme { font-size: 0.9rem; }
+      .year-arrow { right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-container">
+    <div class="clock-ring"></div>
+    <div class="clock-ring"></div>
+    <div class="clock-ring"></div>
+    <div class="grid-overlay"></div>
+  </div>
+  
+  <main>
+    <header>
+      <div class="logo">TartanHacks</div>
+      <h1 class="tagline">Journey Through Time</h1>
+      <p class="subtitle">Explore a decade of innovation, creativity, and groundbreaking projects from Carnegie Mellon's premier hackathon</p>
+    </header>
+    
+    <div class="timeline-container">
+      <div class="timeline-line"></div>
+      <div class="timeline-content">
+        <a href="/2026/" class="year-card">
+          <img src="/2026/imgs/TH26.svg" alt="TartanHacks 2026" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2026</div>
+            <div class="year-theme">Mosaic</div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2025/" class="year-card">
+          <img src="/2025/logo.svg" alt="TartanHacks 2025" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2025</div>
+            <div class="year-theme">Changing Tides</div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2024/" class="year-card">
+          <img src="/2024/svg/logo.svg" alt="TartanHacks 2024" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2024</div>
+            <div class="year-theme">Amplify</div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2023/" class="year-card">
+          <img src="/2023/svg/logo.svg" alt="TartanHacks 2023" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2023</div>
+            <div class="year-theme"> </div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2022/" class="year-card">
+          <img src="/2022/logo.svg" alt="TartanHacks 2022" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2022</div>
+            <div class="year-theme"> </div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2021/" class="year-card">
+          <img src="/2021/logo.png" alt="TartanHacks 2021" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2021</div>
+            <div class="year-theme"> </div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2020/" class="year-card">
+          <img src="/2020/logo.png" alt="TartanHacks 2020" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2020</div>
+            <div class="year-theme"> </div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+        
+        <a href="/2015/" class="year-card">
+          <img src="/2015/logo.png" alt="TartanHacks 2015" class="year-logo" />
+          <div class="year-content">
+            <div class="year-number">2015</div>
+            <div class="year-theme"> </div>
+          </div>
+          <span class="year-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    
+    <footer>
+      <p>Made with ❤️ by ScottyLabs</p>
+    </footer>
+  </main>
+</body>
+</html>

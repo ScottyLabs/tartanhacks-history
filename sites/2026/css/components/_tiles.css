@@ -1,0 +1,174 @@
+/* Decorative Tiles */
+
+.tiles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+}
+
+.tile {
+    position: absolute;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Individual Tile Positions */
+
+/* Tile 0 - left side, below hero */
+.tile-0 {
+    top: 700px;
+    left: 200px;
+    width: 130px;
+}
+
+/* Tile 1 - right side */
+.tile-1 {
+    top: 950px;
+    left: 275px;
+    width: 134px;
+}
+
+/* Tile 2 - in cluster 0 */
+.tile-2 {
+    width: 130px;
+}
+
+/* Tile 3 - in cluster 0 */
+.tile-3 {
+    width: 202px;
+}
+
+/* Tile 4 - in cluster 1 */
+.tile-4 {
+    width: 100px;
+}
+
+/* Tile 5 - in cluster 1 */
+.tile-5 {
+    width: 63px;
+}
+
+/* Tile 6 - left side, standalone */
+.tile-6 {
+    top: 1700px;
+    left: 0;
+    width: 339px;
+}
+
+/* Tile 7 - right side, standalone */
+.tile-7 {
+    top: 2200px;
+    right: -50px;
+    width: 184px;
+}
+
+/* Tile 8 - in cluster 2 */
+.tile-8 {
+    width: 250px;
+}
+
+/* Tile 9 - in cluster 2 */
+.tile-9 {
+    width: 150px;
+}
+
+/* Tile 10 - in cluster 3 */
+.tile-10 {
+    width: 67px;
+}
+
+/* Tile 11 - in cluster 3 */
+.tile-11 {
+    width: 199px;
+}
+
+/* Tile 12 - in cluster 3 */
+.tile-12 {
+    width: 187px;
+}
+
+/* Tile Clusters */
+
+/* Cluster 0: tiles 2 & 3 (right side) */
+.tile-cluster-0 {
+    position: absolute;
+    top: 1150px;
+    left: 1024px;
+    pointer-events: none;
+}
+
+.tile-cluster-0 .tile-2 {
+    position: relative;
+    left: 123px;
+}
+
+.tile-cluster-0 .tile-3 {
+    position: relative;
+    top: -80px;
+}
+
+/* Cluster 1: tiles 4 & 5 (left side) */
+.tile-cluster-1 {
+    position: absolute;
+    top: 1450px;
+    left: 144px;
+    pointer-events: none;
+}
+
+.tile-cluster-1 .tile-4 {
+    position: relative;
+    left: 25px;
+}
+
+.tile-cluster-1 .tile-5 {
+    position: relative;
+    top: -50px;
+}
+
+/* Cluster 2: tiles 8 & 9 */
+.tile-cluster-2 {
+    position: absolute;
+    top: 2500px;
+    left: 142px;
+    pointer-events: none;
+}
+
+.tile-cluster-2 .tile-8 {
+    position: relative;
+}
+
+.tile-cluster-2 .tile-9 {
+    position: relative;
+    top: -100px;
+    left: -47px;
+}
+
+/* Cluster 3: tiles 10, 11 & 12 (right side group) */
+.tile-cluster-3 {
+    position: absolute;
+    top: 3200px;
+    left: 1054px;
+    pointer-events: none;
+}
+
+.tile-cluster-3 .tile-10 {
+    position: relative;
+    left: 136px;
+    top: 15px;
+}
+
+.tile-cluster-3 .tile-11 {
+    position: relative;
+    top: -33px;
+}
+
+.tile-cluster-3 .tile-12 {
+    position: relative;
+    top: -128.5px;
+    left: 105px;
+}
