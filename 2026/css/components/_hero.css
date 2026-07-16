@@ -87,7 +87,8 @@
     height: 24px;
     justify-content: center;
     /*align-items: center;*/
-    /*width: fit-content;*/
+    /* very important to not stretch, and this works on Webkit and Chromium */
+    width: auto
 }
 
 .hero-description {
