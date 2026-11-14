@@ -70,18 +70,3 @@
         grid-template-columns: 1fr;
     }
 }
-    /* Glassy banner tablet */
-    .thank-you-banner {
-        margin: 15px auto;
-        max-width: 80%;
-    }
-
-    .thank-you-text {
-        font-size: 16px;
-    }
-
-    /* Glassy button tablet */
-    .glassy-button {
-        padding: 14px 28px;
-        font-size: 18px;
-    }

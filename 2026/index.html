@@ -14,7 +14,6 @@
   <script src="./js/faq.js"></script>
   <script src="./js/prizes.js"></script>
   <script src="./js/schedule.js"></script>
-  <script src="./js/banner.js"></script>
   <script>
     !function (t, e) { var o, n, p, r; e.__SV || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
     posthog.init('phc_ejDcr5o2V9mVvWWgtfYyygzSwTEGMcC8H2no77TmT7t', {
@@ -40,11 +39,6 @@
     </nav>
   </header>
   <main>
-    <!-- Thank you banner for 2026 -->
-    <div class="thank-you-banner glassy-banner" id="thank-you-banner">
-      <button class="banner-close-btn" id="banner-close-btn" aria-label="Close banner">&times;</button>
-      <p class="thank-you-text">🎉 Thank you to everyone who made TartanHacks 2026 a huge success! Congratulations to all the winners and participants! 🎉</p>
-    </div>
     <section id="home" class="hero-section">
       <div class="hero-content">
         <div class="hero-title">
@@ -57,12 +51,10 @@
               class="inline-applovin" />
           </p>
         </div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfBY9a612kkEpzbnvUoKEGYQus52WEq7Vu0w2vQMMxWooygIA/viewform" class="register-link glassy-button">
-          Pre-register Now
+        <a class="register-link">
+          <img src="./imgs/register-button.png" alt="Register Now" class="register-button" />
         </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe7j7QF4gYn1bSDUcloSpNJ-tfwdP6F99ZHlX0Ys9OLsEbFfQ/viewform" class="register-link glassy-button">
-          2027 Judge Interest Form
-        </a>
+        <div class="hero-transition"></div>
       </div>
       <div class="hero-transition-spacer"></div>
       <div class="hero-description">
@@ -76,23 +68,23 @@
     <hr class="section-divider" />
     <section class="theme-section">
       <div class="theme-head">
-        <h2 class="theme-intro">The 2026 theme was...</h2>
+        <h2 class="theme-intro">This year's theme is...</h2>
         <p class="section-title">
           MOSAIC
         </p>
       </div>
       <div class="theme-description">
-        <p>For 24 hours, participants stepped into a world built from fragments,<br>floating tiles, ideas that refract and snap into
+        <p>For 24 hours, step into a world built from fragments,<br>floating tiles, ideas that refract and snap into
           place.</p>
-        <p>Nothing arrived whole; everything began as a piece. Teams gathered scattered bits of vision,
-          skill, and code, assembling them into something greater than any single part. Every insight became a tile and
-          every teammate a new color. As the hours passed, the picture sharpened, a Mosaic taking shape.</p>
-        <p class="theme-tagline"><strong>Entered with fragments.<br>Left with something whole.</strong></p>
+        <p>Nothing arrives whole; everything begins as a piece. You and your team gather scattered bits of vision,
+          skill, and code, assembling them into something greater than any single part. Every insight becomes a tile and
+          every teammate a new color. As the hours pass, the picture will sharpen, a Mosaic taking shape.</p>
+        <p class="theme-tagline"><strong>Enter with fragments.<br>Leave with something whole.</strong></p>
       </div>
     </section>
     <hr class="section-divider" />
     <section id="schedule" class="schedule-section">
-      <h2 class="section-title">SCHEDULE (2026)</h2>
+      <h2 class="section-title">SCHEDULE</h2>
       <div id="schedule-content">
         <div class="schedule-day-wrapper">
           <img src="./imgs/week_before.png" alt="Schedule Day" />
@@ -124,7 +116,7 @@
     </section>
     -->
     <section id="prizes" class="prizes-section">
-      <h3 class="section-title">2026 Prize Tracks</h3>
+      <h3 class="section-title">Prize Tracks</h3>
       <div id="prizes-content">
         <div class="prize-section">
           <h3>ScottyLabs</h3>
