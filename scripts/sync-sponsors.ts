@@ -201,7 +201,7 @@ function oneFolder(entries: DriveFile[], name: string): DriveFile {
 
 function stemOf(name: string): string {
   const lower = name.toLowerCase();
-  for (const ext of [".png", ".webp", ".jpg", ".jpeg"]) {
+  for (const ext of [".png", ".webp", ".jpg", ".jpeg", ".svg"]) {
     if (lower.endsWith(ext)) return name.slice(0, -ext.length);
   }
   return name;
@@ -339,7 +339,7 @@ export function spliceSponsors(html: string, inner: string): string {
   return `${html.slice(0, region.start + MARKER_START.length)}${between}${html.slice(region.end)}`;
 }
 
-const LOCAL_IMAGE_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*\.(?:png|webp|jpe?g)$/;
+const LOCAL_IMAGE_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*\.(?:png|webp|jpe?g|svg)$/;
 
 async function readLocalImage(name: string): Promise<Uint8Array> {
   const path = `${IMAGE_PREFIX}${name}`;
@@ -376,7 +376,7 @@ export async function loadLocalSponsors(): Promise<Tier[]> {
       if (entry.name.startsWith(".")) continue;
       if (!entry.isFile()) fail(`Unexpected folder ${entry.name} in ${tier.folder}`);
       if (!LOCAL_IMAGE_NAME.test(entry.name)) {
-        fail(`${tier.folder}/${entry.name} is not a png, webp, or jpeg`);
+        fail(`${tier.folder}/${entry.name} is not a png, webp, jpeg, or svg`);
       }
       const alt = altOf(stemOf(entry.name));
       if (!alt) fail(`${entry.name} is missing a name`);
