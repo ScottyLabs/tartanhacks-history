@@ -3,11 +3,14 @@ import {
   claimSponsor,
   fail,
   IMAGE_PREFIX,
+  LINKS_PATH,
+  linksDocument,
   MAX_BYTES,
   PAGE_PATH,
   renderSponsors,
   slugOf,
   spliceSponsors,
+  sponsorHref,
   stemOf,
   TIERS,
 } from "./sync-local.ts";
@@ -33,6 +36,7 @@ type DriveFile = {
   name: string;
   mimeType: string;
   size?: string;
+  description?: string;
 };
 
 type GitTreeEntry = {
@@ -157,7 +161,7 @@ async function driveList(token: string, parentId: string): Promise<DriveFile[]> 
   do {
     const url = new URL("https://www.googleapis.com/drive/v3/files");
     url.searchParams.set("q", `'${parentId}' in parents and trashed = false`);
-    url.searchParams.set("fields", "nextPageToken,files(id,name,mimeType,size)");
+    url.searchParams.set("fields", "nextPageToken,files(id,name,mimeType,size,description)");
     url.searchParams.set("pageSize", "200");
     url.searchParams.set("supportsAllDrives", "true");
     url.searchParams.set("includeItemsFromAllDrives", "true");
@@ -222,7 +226,16 @@ async function loadSponsors(): Promise<Tier[]> {
       const slug = slugOf(stem);
       claimSponsor(seenAlts, seenSlugs, tier.folder, alt, slug, file.name);
       const bytes = await downloadImage(token, file);
-      sponsors.push({ alt, file: `${tier.folder}/${slug}${ext}`, bytes });
+      const description = file.description?.trim();
+      const href = description
+        ? sponsorHref(description, `${tier.folder}/${file.name}`)
+        : undefined;
+      sponsors.push({
+        alt,
+        file: `${tier.folder}/${slug}${ext}`,
+        bytes,
+        ...(href ? { href } : {}),
+      });
     }
     sponsors.sort((a, b) => a.alt.localeCompare(b.alt, "en", { sensitivity: "base" }));
     tiers.push({ ...tier, sponsors });
@@ -317,7 +330,12 @@ async function createBlob(token: string, bytes: Uint8Array): Promise<string> {
 async function publish(token: string, tiers: Tier[]): Promise<void> {
   const current = await currentTree(token);
   const page = new TextEncoder().encode(spliceSponsors(current.page, renderSponsors(tiers)));
-  const desired = new Map<string, Uint8Array>([[PAGE_PATH, page]]);
+  const links = new TextEncoder().encode(linksDocument(tiers));
+  await Bun.write(LINKS_PATH, links);
+  const desired = new Map<string, Uint8Array>([
+    [PAGE_PATH, page],
+    [LINKS_PATH, links],
+  ]);
   for (const tier of tiers) {
     for (const sponsor of tier.sponsors) {
       desired.set(`${IMAGE_PREFIX}${sponsor.file}`, sponsor.bytes);

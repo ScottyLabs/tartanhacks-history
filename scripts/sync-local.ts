@@ -1,13 +1,14 @@
 import { readdir } from "node:fs/promises";
 
 // Rebuilds the 2027 sponsor section from the Title, Premier, and Partner
-// folders in 2027/imgs/sponsors. Does not call Google. The remote sync imports
-// the shared names and HTML from this file.
+// folders in 2027/imgs/sponsors. Links come from 2027/links.json. Does not call
+// Google. The remote sync imports the shared names and HTML from this file.
 
 export const MAX_BYTES = 1_000_000;
 const MARKER_START = "<!-- sponsors:start -->";
 const MARKER_END = "<!-- sponsors:end -->";
 export const IMAGE_PREFIX = "2027/imgs/sponsors/";
+export const LINKS_PATH = "2027/links.json";
 export const PAGE_PATH = "2027/index.html";
 
 export const TIERS = [
@@ -20,6 +21,7 @@ export type Sponsor = {
   alt: string;
   file: string;
   bytes: Uint8Array;
+  href?: string;
 };
 
 export type Tier = {
@@ -56,6 +58,29 @@ export function altOf(stem: string): string {
   return stem.replaceAll("_", " ").trim();
 }
 
+export function sponsorHref(value: string, label: string): string {
+  const href = value.trim();
+  if (!href) fail(`${label} is missing a link`);
+  let url: URL;
+  try {
+    url = new URL(href);
+  } catch {
+    fail(`${label} is not an http(s) link`);
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") {
+    fail(`${label} is not an http(s) link`);
+  }
+  return href;
+}
+
+export function linksDocument(tiers: Tier[]): string {
+  const entries = tiers
+    .flatMap((tier) => tier.sponsors)
+    .flatMap((sponsor) => (sponsor.href ? [[sponsor.file, sponsor.href] as const] : []))
+    .sort(([left], [right]) => left.localeCompare(right, "en"));
+  return `${JSON.stringify(Object.fromEntries(entries), null, 2)}\n`;
+}
+
 export function claimSponsor(
   seenAlts: Map<string, string>,
   seenSlugs: Map<string, string>,
@@ -85,10 +110,20 @@ export function renderSponsors(tiers: Tier[]): string {
     .filter((tier) => tier.sponsors.length > 0)
     .map((tier) => {
       const items = tier.sponsors
-        .map(
-          (sponsor) =>
-            `          <li><img src="./imgs/sponsors/${sponsor.file}" alt="${escapeHtml(sponsor.alt)}"></li>`,
-        )
+        .map((sponsor) => {
+          const alt = escapeHtml(sponsor.alt);
+          const src = `./imgs/sponsors/${sponsor.file}`;
+          if (!sponsor.href) {
+            return `          <li><img src="${src}" alt="${alt}" /></li>`;
+          }
+          return [
+            "          <li>",
+            `            <a href="${escapeHtml(sponsor.href)}"`,
+            `              ><img src="${src}" alt="${alt}"`,
+            "            /></a>",
+            "          </li>",
+          ].join("\n");
+        })
         .join("\n");
       return [
         `      <div class="${tier.className}">`,
@@ -147,6 +182,7 @@ async function loadLocalSponsors(): Promise<Tier[]> {
     fail(`Unexpected file ${entry.name} in ${root}`);
   }
 
+  const links = await loadLinks();
   const seenAlts = new Map<string, string>();
   const seenSlugs = new Map<string, string>();
   const tiers: Tier[] = [];
@@ -162,18 +198,45 @@ async function loadLocalSponsors(): Promise<Tier[]> {
       }
       const alt = altOf(stemOf(entry.name));
       if (!alt) fail(`${entry.name} is missing a name`);
+      const file = `${tier.folder}/${entry.name}`;
       claimSponsor(seenAlts, seenSlugs, tier.folder, alt, slugOf(stemOf(entry.name)), entry.name);
+      const href = links.get(file);
       sponsors.push({
         alt,
-        file: `${tier.folder}/${entry.name}`,
-        bytes: await readLocalImage(`${tier.folder}/${entry.name}`),
+        file,
+        bytes: await readLocalImage(file),
+        ...(href ? { href } : {}),
       });
     }
     sponsors.sort((a, b) => a.alt.localeCompare(b.alt, "en", { sensitivity: "base" }));
     tiers.push({ ...tier, sponsors });
   }
   if (tiers.every((tier) => tier.sponsors.length === 0)) fail("No local sponsor images");
+  const known = new Set(tiers.flatMap((tier) => tier.sponsors.map((sponsor) => sponsor.file)));
+  for (const file of links.keys()) {
+    if (!known.has(file)) fail(`${LINKS_PATH} lists ${file}, which is not a sponsor image`);
+  }
   return tiers;
+}
+
+async function loadLinks(): Promise<Map<string, string>> {
+  const file = Bun.file(LINKS_PATH);
+  if (!(await file.exists())) return new Map();
+  let parsed: unknown;
+  try {
+    parsed = await file.json();
+  } catch {
+    fail(`${LINKS_PATH} is not valid JSON`);
+  }
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+    fail(`${LINKS_PATH} must be an object of sponsor paths to links`);
+  }
+  const links = new Map<string, string>();
+  for (const [path, href] of Object.entries(parsed)) {
+    if (typeof href !== "string") fail(`${LINKS_PATH} link for ${path} must be a string`);
+    links.set(path, sponsorHref(href, `${LINKS_PATH} ${path}`));
+  }
+  return links;
 }
 
 export async function syncLocal(): Promise<void> {
