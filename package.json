@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "prepare": "vp config --no-agent",
+    "dev": "vp dev",
     "check": "vp check",
     "lint": "vp lint",
     "fmt": "vp fmt --check"
