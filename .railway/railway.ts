@@ -1,17 +1,18 @@
 import { defineRailway, github, project, service } from "railway/iac";
 
-// This branch owns only the 2027 archive. The other years are separate services.
-export const partial = "2027";
+// This branch owns only one archive. The other years are separate services.
+const year = "2027";
+export const partial = year;
 
 export default defineRailway(() => {
-  const site = service("2027", {
-    source: github("ScottyLabs/tartanhacks-history", { branch: "2027" }),
+  const site = service(year, {
+    source: github("ScottyLabs/tartanhacks-history", { branch: year }),
     build: {
       builder: "DOCKERFILE",
       dockerfilePath: "Dockerfile",
     },
     healthcheck: "/health",
-    domains: ["2027.tartanhacks.com"],
+    domains: [`${year}.tartanhacks.com`],
     deploy: {
       sleepApplication: true,
     },
