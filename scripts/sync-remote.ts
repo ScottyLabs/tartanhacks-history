@@ -18,13 +18,12 @@ import type { Sponsor, Tier } from "./sync-local.ts";
 
 const REPO = "ScottyLabs/tartanhacks-history";
 const BRANCH = "2027";
-const YEAR_FOLDER = "26-27";
-const TIER_IGNORE = new Set(["Special Partners"]);
 
 const MIME_EXT: Record<string, string> = {
   "image/png": ".png",
   "image/webp": ".webp",
   "image/jpeg": ".jpg",
+  "image/svg+xml": ".svg",
 };
 
 const FOLDER_MIME = "application/vnd.google-apps.folder";
@@ -197,16 +196,14 @@ async function downloadImage(token: string, file: DriveFile): Promise<Uint8Array
 
 async function loadSponsors(): Promise<Tier[]> {
   const token = await googleAccessToken(requiredEnv("GOOGLE_CLIENT_EMAIL"), privateKey());
-  const parent = await driveList(token, driveFolderId());
-  const year = oneFolder(parent, YEAR_FOLDER);
-  const entries = await driveList(token, year.id);
+  const entries = await driveList(token, driveFolderId());
   const allowed = new Set<string>(TIERS.map((tier) => tier.folder));
   for (const entry of entries) {
     if (entry.mimeType === FOLDER_MIME) {
-      if (TIER_IGNORE.has(entry.name) || allowed.has(entry.name)) continue;
-      fail(`Unexpected folder ${entry.name} in ${YEAR_FOLDER}`);
+      if (allowed.has(entry.name)) continue;
+      fail(`Unexpected folder ${entry.name} in the Drive folder`);
     }
-    fail(`Unexpected file ${entry.name} in ${YEAR_FOLDER}`);
+    fail(`Unexpected file ${entry.name} in the Drive folder`);
   }
 
   const seenAlts = new Map<string, string>();
@@ -218,7 +215,7 @@ async function loadSponsors(): Promise<Tier[]> {
     const sponsors: Sponsor[] = [];
     for (const file of files) {
       const ext = MIME_EXT[file.mimeType];
-      if (!ext) fail(`${tier.folder}/${file.name} is not a png, webp, or jpeg`);
+      if (!ext) fail(`${tier.folder}/${file.name} is not a png, webp, jpeg, or svg`);
       if (Number(file.size ?? 0) >= MAX_BYTES) fail(`${file.name} must be under 1 MB`);
       const stem = stemOf(file.name);
       const alt = altOf(stem);
