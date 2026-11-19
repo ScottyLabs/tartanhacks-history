@@ -14,7 +14,8 @@ Each year lives on a git branch named by year:
 - `2024`
 - `2025`
 - `2026`
+- `2027`
 
-Check out a branch and deploy (for example Railway using the repo `Dockerfile`). The container copies `sites/<year>/` into nginx document root, so asset paths like `/2025/...` keep working.
+Check out a branch and deploy (for example Railway using the repo `Dockerfile`). This branch serves `2027/` with Caddy. `PORT` comes from the environment (Railway sets it).
 
-**`main`** holds only shared Docker and nginx files and no site assets.
+**`main`** holds only shared Docker files and no site assets.
