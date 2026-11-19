@@ -7,8 +7,9 @@
     "types": ["bun"],
     "strict": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["sync-sponsors.ts"]
+  "include": ["sponsors.ts", "sync-sponsors.ts"]
 }
