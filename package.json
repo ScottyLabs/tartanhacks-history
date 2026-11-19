@@ -8,7 +8,8 @@
     "check": "vp check",
     "lint": "vp lint",
     "fmt": "vp fmt --check",
-    "sponsors:sync": "bun scripts/sync-sponsors.ts"
+    "sponsors:sync": "bun scripts/sync-sponsors.ts",
+    "sponsors:sync:local": "bun scripts/sync-sponsors.ts --local"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",

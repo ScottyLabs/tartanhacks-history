@@ -1,5 +1,9 @@
+import { readdir } from "node:fs/promises";
+
 // Syncs sponsor logos for the 2027 archive only. The branch is fixed so this
-// job cannot update another year.
+// job cannot update another year. `--local` rebuilds the sponsor section from
+// the Title, Premier, and Partner folders in 2027/imgs/sponsors and does not
+// call Google.
 
 const REPO = "ScottyLabs/tartanhacks-history";
 const BRANCH = "2027";
@@ -218,6 +222,22 @@ function altOf(stem: string): string {
   return stem.replaceAll("_", " ").trim();
 }
 
+function claimSponsor(
+  seenAlts: Map<string, string>,
+  seenSlugs: Map<string, string>,
+  tier: string,
+  alt: string,
+  slug: string,
+  label: string,
+): void {
+  const previousTier = seenAlts.get(alt.toLowerCase());
+  if (previousTier) fail(`${alt} appears in both ${previousTier} and ${tier}`);
+  const previousFile = seenSlugs.get(slug);
+  if (previousFile) fail(`${label} would overwrite ${previousFile}`);
+  seenAlts.set(alt.toLowerCase(), tier);
+  seenSlugs.set(slug, label);
+}
+
 async function downloadImage(token: string, file: DriveFile): Promise<Uint8Array> {
   const response = await fetch(
     `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media&supportsAllDrives=true`,
@@ -259,15 +279,9 @@ export async function loadSponsors(): Promise<Tier[]> {
       const stem = stemOf(file.name);
       const alt = altOf(stem);
       const slug = slugOf(stem);
-      const altKey = alt.toLowerCase();
-      const previousTier = seenAlts.get(altKey);
-      if (previousTier) fail(`${alt} appears in both ${previousTier} and ${tier.folder}`);
-      const previousFile = seenSlugs.get(slug);
-      if (previousFile) fail(`${file.name} would overwrite ${previousFile}`);
-      seenAlts.set(altKey, tier.folder);
-      seenSlugs.set(slug, file.name);
+      claimSponsor(seenAlts, seenSlugs, tier.folder, alt, slug, file.name);
       const bytes = await downloadImage(token, file);
-      sponsors.push({ alt, file: `${slug}${ext}`, bytes });
+      sponsors.push({ alt, file: `${tier.folder}/${slug}${ext}`, bytes });
     }
     sponsors.sort((a, b) => a.alt.localeCompare(b.alt, "en", { sensitivity: "base" }));
     tiers.push({ ...tier, sponsors });
@@ -306,7 +320,7 @@ export function renderSponsors(tiers: Tier[]): string {
     .join("\n");
 }
 
-export function spliceSponsors(html: string, inner: string): string {
+function sponsorRegion(html: string): { start: number; end: number; inner: string } {
   const start = html.indexOf(MARKER_START);
   const end = html.indexOf(MARKER_END);
   if (start === -1 || end < start) fail("2027/index.html is missing sponsor markers");
@@ -316,8 +330,68 @@ export function spliceSponsors(html: string, inner: string): string {
   if (html.indexOf(MARKER_END, end + MARKER_END.length) !== -1) {
     fail("2027/index.html has repeated sponsor markers");
   }
+  return { start, end, inner: html.slice(start + MARKER_START.length, end) };
+}
+
+export function spliceSponsors(html: string, inner: string): string {
+  const region = sponsorRegion(html);
   const between = inner ? `\n${inner}\n      ` : "\n      ";
-  return `${html.slice(0, start + MARKER_START.length)}${between}${html.slice(end)}`;
+  return `${html.slice(0, region.start + MARKER_START.length)}${between}${html.slice(region.end)}`;
+}
+
+const LOCAL_IMAGE_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*\.(?:png|webp|jpe?g)$/;
+
+async function readLocalImage(name: string): Promise<Uint8Array> {
+  const path = `${IMAGE_PREFIX}${name}`;
+  const file = Bun.file(path);
+  if (!(await file.exists())) fail(`Missing ${path}`);
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  if (bytes.length === 0 || bytes.length >= MAX_BYTES) {
+    fail(`${name} must be a non-empty image under 1 MB`);
+  }
+  return bytes;
+}
+
+export async function loadLocalSponsors(): Promise<Tier[]> {
+  const root = IMAGE_PREFIX.slice(0, -1);
+  const entries = await readdir(root, { withFileTypes: true }).catch(() => fail(`Missing ${root}`));
+  const allowed = new Set<string>(TIERS.map((tier) => tier.folder));
+  for (const entry of entries) {
+    if (entry.name.startsWith(".")) continue;
+    if (entry.isDirectory()) {
+      if (!allowed.has(entry.name)) fail(`Unexpected folder ${entry.name} in ${root}`);
+      continue;
+    }
+    fail(`Unexpected file ${entry.name} in ${root}`);
+  }
+
+  const seenAlts = new Map<string, string>();
+  const seenSlugs = new Map<string, string>();
+  const tiers: Tier[] = [];
+  for (const tier of TIERS) {
+    const dir = `${IMAGE_PREFIX}${tier.folder}`;
+    const files = await readdir(dir, { withFileTypes: true }).catch(() => fail(`Missing ${dir}`));
+    const sponsors: Sponsor[] = [];
+    for (const entry of files) {
+      if (entry.name.startsWith(".")) continue;
+      if (!entry.isFile()) fail(`Unexpected folder ${entry.name} in ${tier.folder}`);
+      if (!LOCAL_IMAGE_NAME.test(entry.name)) {
+        fail(`${tier.folder}/${entry.name} is not a png, webp, or jpeg`);
+      }
+      const alt = altOf(stemOf(entry.name));
+      if (!alt) fail(`${entry.name} is missing a name`);
+      claimSponsor(seenAlts, seenSlugs, tier.folder, alt, slugOf(stemOf(entry.name)), entry.name);
+      sponsors.push({
+        alt,
+        file: `${tier.folder}/${entry.name}`,
+        bytes: await readLocalImage(`${tier.folder}/${entry.name}`),
+      });
+    }
+    sponsors.sort((a, b) => a.alt.localeCompare(b.alt, "en", { sensitivity: "base" }));
+    tiers.push({ ...tier, sponsors });
+  }
+  if (tiers.every((tier) => tier.sponsors.length === 0)) fail("No local sponsor images");
+  return tiers;
 }
 
 function gitBlobSha(bytes: Uint8Array): string {
@@ -452,7 +526,31 @@ async function publish(token: string, tiers: Tier[]): Promise<void> {
   console.log(`Updated ${BRANCH} to ${commit.sha}`);
 }
 
+function syncMode(): "drive" | "local" {
+  const args = Bun.argv.slice(2);
+  if (args.length === 0) return "drive";
+  if (args.length === 1 && args[0] === "--local") return "local";
+  fail(`Unknown arguments: ${args.join(" ")}`);
+}
+
+async function syncLocal(): Promise<void> {
+  const pageFile = Bun.file(PAGE_PATH);
+  if (!(await pageFile.exists())) fail(`${PAGE_PATH} is missing`);
+  const html = await pageFile.text();
+  const next = spliceSponsors(html, renderSponsors(await loadLocalSponsors()));
+  if (next === html) {
+    console.log("Sponsors unchanged");
+    return;
+  }
+  await Bun.write(PAGE_PATH, next);
+  console.log(`Updated ${PAGE_PATH}`);
+}
+
 async function main(): Promise<void> {
+  if (syncMode() === "local") {
+    await syncLocal();
+    return;
+  }
   await loadLocalEnv();
   const tiers = await loadSponsors();
   await publish(requiredEnv("SPONSORS_GITHUB_TOKEN"), tiers);
