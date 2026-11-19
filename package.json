@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "vp config --no-agent"
+    "prepare": "vp config --no-agent",
+    "check": "vp check",
+    "lint": "vp lint",
+    "fmt": "vp fmt --check"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
