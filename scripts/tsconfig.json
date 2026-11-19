@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["sponsors.ts", "sync-sponsors.ts"]
+  "include": ["sync-local.ts", "sync-remote.ts", "sync-sponsors.ts"]
 }

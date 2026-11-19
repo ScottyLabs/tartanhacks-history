@@ -1,4 +1,4 @@
 FROM oven/bun:1-alpine
 WORKDIR /app
-COPY scripts/sync-sponsors.ts scripts/sponsors.ts /app/
+COPY scripts/sync-sponsors.ts scripts/sync-local.ts scripts/sync-remote.ts /app/
 CMD ["bun", "/app/sync-sponsors.ts"]

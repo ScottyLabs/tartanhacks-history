@@ -1,8 +1,8 @@
 import { readdir } from "node:fs/promises";
 
-// Sponsor names, HTML markers, and the local image folders. The Drive sync
-// imports this module; `--local` rebuilds the page from these folders and
-// does not call Google.
+// Rebuilds the 2027 sponsor section from the Title, Premier, and Partner
+// folders in 2027/imgs/sponsors. Does not call Google. The remote sync imports
+// the shared names and HTML from this file.
 
 export const MAX_BYTES = 1_000_000;
 const MARKER_START = "<!-- sponsors:start -->";
@@ -134,7 +134,7 @@ async function readLocalImage(name: string): Promise<Uint8Array> {
   return bytes;
 }
 
-export async function loadLocalSponsors(): Promise<Tier[]> {
+async function loadLocalSponsors(): Promise<Tier[]> {
   const root = IMAGE_PREFIX.slice(0, -1);
   const entries = await readdir(root, { withFileTypes: true }).catch(() => fail(`Missing ${root}`));
   const allowed = new Set<string>(TIERS.map((tier) => tier.folder));
@@ -174,4 +174,17 @@ export async function loadLocalSponsors(): Promise<Tier[]> {
   }
   if (tiers.every((tier) => tier.sponsors.length === 0)) fail("No local sponsor images");
   return tiers;
+}
+
+export async function syncLocal(): Promise<void> {
+  const pageFile = Bun.file(PAGE_PATH);
+  if (!(await pageFile.exists())) fail(`${PAGE_PATH} is missing`);
+  const html = await pageFile.text();
+  const next = spliceSponsors(html, renderSponsors(await loadLocalSponsors()));
+  if (next === html) {
+    console.log("Sponsors unchanged");
+    return;
+  }
+  await Bun.write(PAGE_PATH, next);
+  console.log(`Updated ${PAGE_PATH}`);
 }
