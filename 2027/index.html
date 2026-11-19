@@ -122,15 +122,32 @@
       }
 
       .tier li {
-        display: grid;
-        place-items: center;
-        min-width: 7.5rem;
-        min-height: 4.25rem;
-        padding: 0.7rem 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 10.5rem;
+        height: 5rem;
+        padding: 0.75rem 1rem;
         background: #f6f1ea;
       }
 
+      .tier--premier li {
+        width: 12.5rem;
+        height: 5.5rem;
+      }
+
+      .tier--title li {
+        width: min(32rem, 100%);
+        height: 8rem;
+      }
+
       .tier a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
         color: inherit;
         line-height: 0;
         text-decoration: none;
@@ -138,20 +155,9 @@
 
       .tier img {
         display: block;
-        width: auto;
-        max-width: 8rem;
-        max-height: 2.75rem;
+        width: 100%;
+        height: 100%;
         object-fit: contain;
-      }
-
-      .tier--title img {
-        max-width: 14rem;
-        max-height: 4.5rem;
-      }
-
-      .tier--premier img {
-        max-width: 10rem;
-        max-height: 3.4rem;
       }
     </style>
   </head>
