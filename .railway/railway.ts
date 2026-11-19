@@ -24,6 +24,7 @@ export default defineRailway(() => {
       builder: "DOCKERFILE",
       dockerfilePath: "Dockerfile.cron",
     },
+    preDeploy: "bun /app/sync-sponsors.ts", // Also sync on every deploy.
     deploy: {
       cronSchedule: "0 5 * * *",
       restartPolicyType: "NEVER",
