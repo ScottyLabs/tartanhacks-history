@@ -9,7 +9,7 @@ export default defineRailway(() => {
     source: github("ScottyLabs/tartanhacks-history", { branch: year }),
     build: {
       builder: "DOCKERFILE",
-      dockerfilePath: "Dockerfile",
+      dockerfilePath: "Dockerfile.site",
     },
     healthcheck: "/health",
     domains: [`${year}.tartanhacks.com`],
