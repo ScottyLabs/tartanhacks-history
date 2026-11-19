@@ -16,7 +16,6 @@ RUN if [ -f /tmp/build-context/2027/index.html ]; then \
     rm -f /usr/share/caddy/Caddyfile \
           /usr/share/caddy/Dockerfile \
           /usr/share/caddy/compose.yaml \
-          /usr/share/caddy/railway.json \
           /usr/share/caddy/.dockerignore \
           /usr/share/caddy/.gitignore && \
     test -f /usr/share/caddy/index.html
