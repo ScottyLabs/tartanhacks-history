@@ -1,0 +1,4 @@
+FROM oven/bun:1-alpine
+WORKDIR /app
+COPY scripts/sync-sponsors.ts /app/sync-sponsors.ts
+CMD ["bun", "/app/sync-sponsors.ts"]
