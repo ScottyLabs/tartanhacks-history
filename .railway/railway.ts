@@ -10,6 +10,7 @@ export default defineRailway(() => {
     build: {
       builder: "DOCKERFILE",
       dockerfilePath: "Dockerfile.site",
+      watchPatterns: ["/Dockerfile.site", "/Caddyfile", "/2027/**"],
     },
     healthcheck: "/health",
     domains: [`${year}.tartanhacks.com`],
@@ -23,6 +24,12 @@ export default defineRailway(() => {
     build: {
       builder: "DOCKERFILE",
       dockerfilePath: "Dockerfile.cron",
+      watchPatterns: [
+        "/Dockerfile.cron",
+        "/scripts/sync-sponsors.ts",
+        "/scripts/sync-local.ts",
+        "/scripts/sync-remote.ts",
+      ],
     },
     preDeploy: "bun /app/sync-sponsors.ts", // Also sync on every deploy.
     deploy: {
